@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-around;
+
+
+    }
+
+    .header .material-symbols-outlined {
+        font-size: 50px;
+        color: red;
+
+    }
+
+    .total-products {
+        width: 50px;
+        height: 50px;
+        border: 1px solid rgb(240, 11, 11);
+        border-radius: 100%;
+        padding: 5px;
+    }
+
+    /*  css cho listproducts */
+    .listproducts {
+        display: flex;
+        flex-wrap: wrap;/* tự động xuống hàng */
+        justify-content: center; /* mục đích để đưa khối to ra giữa */
+        margin-top: 50px;
+        gap: 20px;/* khoảng cách giữa các flex-item */
+    }
+
+    /*  css cho từng product item */
+    .listproducts .product-item {
+        width: 300px;
+        height: 400px;
+        border: 1px solid black;
+        border-radius: 5px;
+       
+    }
+
+    .product-item-img {
+        height: 300px;
+        width: 100%;
+    }
+
+    .product-item-img img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .product-item .title-name {
+        text-align: center;
+        color: tomato;
+        margin-top: 5px;
+    }
+
+    .product-item .cart-item {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+
+    .product-item .cart-item span {
+
+        color: red;
+    }
+    .material-symbols-outlined{
+        cursor: pointer;
+    }
+    .logout{
+        display: none;
+    }
+</style>
+<body>
+    <div class="header">
+        <div>
+            <h2> trang chủ </h2>
+        </div>
+        <div class="cart">
+            <span class="material-symbols-outlined">
+                shopping_cart
+            </span>
+            <span id="totalCountProducts" class="total-products"></span>
+        </div>
+       <button onclick="checkLogout()" class="logout">
+            logout
+       </button>
+        <button class="login">
+           <a href="./login.html">login</a>
+        </button>
+        <button class="register">
+           <a href="./register.html">register</a>
+        </button>
+    </div>
+    <div class="listproducts" id="listproducts">
+        <!-- <div class="product-item">
+                <div class="product-item-img">
+                    <img src="./image/iphone1.png" alt="">
+                </div>
+                <p class="title-name"> IPHONE </p>
+                <div class="cart-item">
+                    <span> PRICE : 250000đ </span>
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                    </span>
+                </div>
+            </div> -->
+    </div>
+    <footer>
+        liên hệ sau!
+    </footer>
+    <script>
+        // let listproducts = [
+        //     {
+        //         src: "./image/iphone1.png",
+        //         name: "IPHONE5",
+        //         price: 25000,
+                    
+        //     },
+        //     {
+        //         src: "./image/iphone2.jpg",
+        //         name: "IPHONE6",
+        //         price: 35000,
+        //     },
+        //     {
+        //         src: "./image/iphone3.jpg",
+        //         name: "IPHONE7",
+        //         price: 45000,
+        //     },
+        //     {
+        //         src: "./image/iphone4.webp",
+        //         name: "IPHONE8",
+        //         price: 55000,
+        //     }, {
+        //         src: "./image/iphone5.jpg",
+        //         name: "IPHONE9",
+        //         price: 65000,
+        //     }, {
+        //         src: "./image/iphone6.jpg",
+        //         name: "IPHONE10",
+        //         price: 75000,
+        //     }, {
+        //         src: "./image/iphone7.png",
+        //         name: "IPHONE11",
+        //         price: 85000,
+        //     }, {
+        //         src: "./image/iphone8.jpg",
+        //         name: "IPHONE11",
+        //         price: 95000,
+        //     }, {
+        //         src: "./image/iphone9.jpg",
+        //         name: "IPHONE12",
+        //         price: 105000,
+        //     }, {
+        //         src: "./image/iphone10.jpg",
+        //         name: "IPHONE14",
+        //         price: 125000,
+        //     }, {
+        //         src: "./image/iphone11.jpg",
+        //         name: "IPHONE14",
+        //         price: 225000,
+        //     }
+        // ]
+        // dùng JS để đổ sản phẩm 
+        // hàm sinh ID
+        // function uuid() {
+        //     return new Date().getMilliseconds() + Math.floor(Math.random()*9999999999999);
+        // }
+        // for (let i = 0; i < listproducts.length; i++) {
+        //     listproducts[i].id=uuid();
+            
+        // }
+        // // console.log(listproducts);
+        // localStorage.setItem("listProducts",JSON.stringify(listproducts))
+        if(checkLogin()){
+            document.getElementsByClassName("logout")[0].style.display="block";
+        }
+        function checkLogout() {
+            let confirmLogout= confirm("bạn có muốn thoát không?");
+            if(confirmLogout){
+                localStorage.removeItem("checkLogin");
+                document.getElementsByClassName("logout")[0].style.display = "none";
+                document.getElementById("totalCountProducts").innerHTML = 0;
+            }
+        }
+        // function check xem đã đăng nhập hay chưa
+            function checkLogin() {
+                let getIsLogin = localStorage.getItem("checkLogin");
+                if (getIsLogin == null) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+         let listProducts =JSON.parse(localStorage.getItem("listProducts"));
+         // function hiển thị sản phẩm  
+        function renderListProducts() {
+            let result="";
+            for (let i = 0; i < listProducts.length; i++) {
+                result+=
+                `
+                    <div class="product-item">
+                        <div class="product-item-img">
+                            <img src="${listProducts[i].src}" alt="">
+                        </div>
+                        <p class="title-name"> ${listProducts[i].name} </p>
+                        <div class="cart-item">
+                            <span> PRICE : ${listProducts[i].price}</span>
+                            <span onclick=addToCart(${listProducts[i].id}) class="material-symbols-outlined">
+                                shopping_cart
+                            </span>
+                        </div>
+                    </div>
+                `
+            }
+            document.getElementById("listproducts").innerHTML=result;
+        }
+        renderListProducts();
+        // function để mua hàng 
+        // trước khi mua hàng phải check xem tài khoản đấy đã đăng nhập hay chưa
+            // giỏ hàng!
+        
+        function addToCart(idProduct) {
+            let listToTalCarts = JSON.parse(localStorage.getItem("listToTalCarts")) || [];
+            let listProducts=JSON.parse(localStorage.getItem("listProducts"));
+            console.log("11111", idProduct);
+            console.log(checkLogin());
+            if(!checkLogin()){
+                console.log("bạn phải đăng nhập trước khi mua hàng! ");
+                return;// chưa đăng nhập dừng chương trình luôn!
+            }else{
+                console.log("mua hàng bình thường!");
+                let idUser=localStorage.getItem("checkLogin");
+                console.log(idUser);
+                for (let i = 0; i < listProducts.length; i++) {
+                    if(listProducts[i].id==idProduct){
+                            let addToCartFromUser={
+                                idUser:idUser,
+                                inforProduct:[listProducts[i]]
+                                } 
+                        listToTalCarts.push(addToCartFromUser);
+                        localStorage.setItem("listToTalCarts",JSON.stringify(listToTalCarts));
+                        showCountProduct();
+                    }
+                    
+                }
+               /*  let addToCartFromUser={
+                    idUser:idUser,
+                    inforProduct:
+                } */
+            }
+        }
+        // function để hiển thị số lượng trong giỏ hàng
+        function showCountProduct() {
+               let idUser = localStorage.getItem("checkLogin");
+                let listToTalCarts = JSON.parse(localStorage.getItem("listToTalCarts")) || [];
+               if(idUser==null){
+                    document.getElementById("totalCountProducts").innerHTML=0;
+               }else{
+                    let listRenderCountProduct= listToTalCarts.filter((item)=>{
+                        return item.idUser== idUser;
+                    })
+                     console.log(listRenderCountProduct);
+                     let a=[];
+                     for (let i = 0; i < listRenderCountProduct.length; i++) {
+                       a.push((listRenderCountProduct[i].inforProduct)[0].id)
+                     }
+                     let b=new Set(a);
+                     console.log(b.size);
+                    document.getElementById("totalCountProducts").innerHTML = b.size;
+               }
+        }
+        showCountProduct();
+    </script>
+</body>
+
+</html>
